@@ -1,4 +1,4 @@
-"""Launch Gazebo + MoveIt2 for myCobot 280 M5."""
+"""Bring up Gazebo with ros2_control for myCobot 280 M5."""
 
 from pathlib import Path
 
@@ -9,27 +9,19 @@ from launch.actions import IncludeLaunchDescription, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from moveit_configs_utils import MoveItConfigsBuilder
-from moveit_configs_utils.launches import (
-    generate_move_group_launch,
-    generate_moveit_rviz_launch,
-)
 
 
 def generate_launch_description() -> LaunchDescription:
     bringup_share = Path(get_package_share_directory('mycobot_280_bringup'))
-    moveit_share = Path(get_package_share_directory('mycobot_280_moveit2'))
     gazebo_share = Path(get_package_share_directory('gazebo_ros'))
 
     xacro_file = bringup_share / 'urdf' / 'gazebo' / 'mycobot_280_m5_gazebo.urdf.xacro'
-    srdf_file = bringup_share / 'config' / 'mycobot_280_m5.srdf'
-
     robot_description = {
         'robot_description': xacro.process_file(str(xacro_file)).toxml()
     }
     use_sim_time = {'use_sim_time': True}
 
-    gazebo_launch = IncludeLaunchDescription(
+    gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             str(gazebo_share / 'launch' / 'gazebo.launch.py')
         )
@@ -49,14 +41,14 @@ def generate_launch_description() -> LaunchDescription:
         output='screen',
     )
 
-    joint_state_broadcaster_spawner = Node(
+    joint_state_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
         arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
         output='screen',
     )
 
-    arm_group_controller_spawner = Node(
+    arm_group_controller = Node(
         package='controller_manager',
         executable='spawner',
         arguments=['arm_group_controller', '--controller-manager', '/controller_manager'],
@@ -66,30 +58,15 @@ def generate_launch_description() -> LaunchDescription:
     start_controllers = RegisterEventHandler(
         OnProcessExit(
             target_action=spawn_entity,
-            on_exit=[joint_state_broadcaster_spawner, arm_group_controller_spawner],
+            on_exit=[joint_state_broadcaster, arm_group_controller],
         )
     )
 
-    moveit_config_builder = MoveItConfigsBuilder(
-        'firefighter', package_name='mycobot_280_moveit2'
-    )
-    moveit_config_builder.parameter('use_sim_time', True)
-    moveit_config = moveit_config_builder.to_moveit_configs()
-    moveit_config.robot_description = robot_description
-    moveit_config.robot_description_semantic = {
-        'robot_description_semantic': srdf_file.read_text()
-    }
-
-    move_group_launch = generate_move_group_launch(moveit_config)
-    moveit_rviz_launch = generate_moveit_rviz_launch(moveit_config)
-
     return LaunchDescription(
         [
-            gazebo_launch,
+            gazebo,
             robot_state_publisher,
             spawn_entity,
             start_controllers,
-            *move_group_launch.entities,
-            *moveit_rviz_launch.entities,
         ]
     )
