@@ -224,7 +224,7 @@ from launch.actions import (
 )
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import Node
+from launch_ros.actions import Node, SetParameter
 from moveit_configs_utils.launches import (
     generate_move_group_launch,
     generate_moveit_rviz_launch,
@@ -352,6 +352,7 @@ def generate_launch_description() -> LaunchDescription:
 
     return LaunchDescription([
         # Gazebo → RSP → Spawn → Controllers → (delay) MoveIt/RViz
+        SetParameter(name='use_sim_time', value=True),
         SetEnvironmentVariable(name='RCUTILS_COLORIZED_OUTPUT', value='1'),
         SetLaunchConfiguration(
             'rviz_config',
