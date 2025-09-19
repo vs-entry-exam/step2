@@ -1,6 +1,6 @@
 # AGENT STATUS
 
-**Last Updated:** 2025-09-19
+**Last Updated:** 2025-09-20
 
 ## Goal
 - myAGV Pro: run Gazebo + SLAM + Nav2 end-to-end while preparing the real-sensor data collection pipeline.
@@ -16,18 +16,21 @@
 - Aligned `joint4`–`joint6` origins and limits with the reference hardware URDF so the myCobot arm now spawns with correctly connected geometry.
 - Rebuilt the `base_footprint` pad (0.01 m) and adjusted the fixed-joint offset so myCobot now spawns flush with the floor even with physics enabled.
 - Cloned fresh copies of `mycobot_ros2` and `agv_pro_ros2` into `step2/src/` and added an initial `mycobot_280_bringup` package with a Gazebo + MoveIt launch skeleton.
+- Duplicated the myCobot Gazebo URDF/SRDF into `mycobot_280_bringup`, tied the root chain to `world → base_footprint`, added ros2_control transmissions, and manually verified `robot_state_publisher` + Gazebo ros2_control produce stable joint states.
+- Split bringup resources into `urdf/gazebo` vs `urdf/moveit`, copied MoveIt YAML/RViz configs under `config/moveit/`, and shipped `.setup_assistant` so MoveItConfigsBuilder resolves the bringup-local model.
+- Added bringup-local launches (`mycobot_gazebo_control.launch.py`, `mycobot_gazebo_moveit.launch.py`) that now consume only bringup-packaged assets.
+- Rebuilt `mycobot_moveit_only.launch.py` so MoveIt loads the bringup URDF/SRDF/YAML stack and verified Gazebo+MoveIt 동시 실행이 성공한다.
 
 ## Current Status & Issues
 - AGV simulation is stable; swapping in the production laser model remains outstanding and will require topic/type bridging as needed.
-- myCobot arm links line up correctly and sit flush with the floor, but the new Gazebo + MoveIt launch (step2) still loads mismatched URDFs (`mycobot_280_m5_gazebo` vs `firefighter`) so TF frames diverge and the arm collapses in Gazebo while MoveIt holds the init pose.
-- ros2_control fails to start in the step2 launch (no `/controller_manager` service), so MoveIt trajectory execution cannot actuate joints yet.
-- AGV simulation remains stable; production laser model swap still outstanding.
+- MoveIt-only bringup이 새 URDF/SRDF로 실행되지만 현재 Plan 단계가 실패하고 있어 원인 분석이 필요하다.
+- Gazebo + MoveIt 통합 런치는 올라오지만 계획된 궤적이 Gazebo 팔에 적용되지 않아 컨트롤러/제한값/TF를 점검해야 한다.
 
 ## Next Steps
-1. Mirror the AGV bringup pattern: duplicate the Gazebo xacro into `step2/mycobot_280_bringup`, align the robot name/root frame with MoveIt, remove the root inertial, and make both Gazebo/MoveIt pull the same `robot_description`.
-2. Inject `gazebo_ros2_control` + controller config (joint_state_broadcaster + arm_group_controller) so `/controller_manager` comes up and MoveIt trajectories can drive the Gazebo model.
-3. Once motion planning succeeds, document the unified launch and revisit dataset logging requirements.
-4. Resume the production laser swap-in for myAGV Pro, documenting any bridges or topic remaps needed.
+1. MoveIt Plan 단계 실패 원인을 추적(kinematics, joint limits, planning scene self-collision 등)하고 정상적인 경로생성이 가능하도록 수정한다.
+2. Gazebo + MoveIt 통합 런치에서 Execute가 관절 궤적을 따라가도록 ros2_control/컨트롤러 파라미터를 조정한다.
+3. 정리된 가동 절차(Gazebo 단독, MoveIt 단독, 통합 런치)를 `README.md`에 문서화한다.
+4. myAGV Pro 실센서 레이저 모델 교체 작업을 재개하고 필요한 브리지/리맵 계획을 수립한다.
 
 ## Repository Guidelines
 
