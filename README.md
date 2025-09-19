@@ -21,8 +21,6 @@ into your `~/.bashrc`
 # ROS2
 source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
-source ~/agv_ws/install/setup.bash
-source ~/cobot_ws/install/setup.bash
 source ~/step2/install/setup.bash
 
 #=================================#
