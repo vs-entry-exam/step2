@@ -1,0 +1,4 @@
+planning_scene_monitor:
+  publish_geometry_updates: true
+  publish_state_updates: true
+  publish_transforms_updates: true
