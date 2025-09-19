@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1
+        - /MotionPlanning1/Status1
       Splitter Ratio: 0.5
     Tree Height: 160
   - Class: rviz_common/Help
@@ -66,55 +67,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          base_footprint:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          g_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint6_flange:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          world:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
         Loop Animation: true
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
@@ -161,55 +113,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          base_footprint:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          g_base:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          joint6_flange:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          world:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
         Robot Alpha: 0.5
         Show Robot Collision: false
         Show Robot Visual: true
@@ -233,7 +136,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2
+      Distance: 6.194892406463623
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

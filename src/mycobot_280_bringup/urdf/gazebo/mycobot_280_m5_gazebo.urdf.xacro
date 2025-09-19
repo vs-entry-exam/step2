@@ -154,15 +154,6 @@
     <static>true</static>
   </gazebo> -->
 
-  <!-- Basic Gazebo friction so the base stays put -->
-  <!-- <gazebo reference="base_footprint">
-    <static>true</static>
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <kp>100000.0</kp>
-    <kd>100.0</kd>
-  </gazebo> -->
-
   <xacro:mycobot_280_ros2_control
     name="mycobot_280_gazebo_system"
     initial_positions_file="${initial_positions_file}"/>
