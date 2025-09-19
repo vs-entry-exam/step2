@@ -1,0 +1,16 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: mycobot_280_bringup
+    relative_path: urdf/moveit/mycobot_280_m5_moveit.urdf.xacro
+  srdf:
+    relative_path: config/mycobot_280_m5.srdf
+  package_settings:
+    author_name: mycobot_280_bringup
+    author_email: example@example.com
+    generated_timestamp: 0
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
