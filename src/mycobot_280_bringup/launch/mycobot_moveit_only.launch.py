@@ -11,6 +11,8 @@ from moveit_configs_utils.launches import (
     generate_moveit_rviz_launch,
 )
 
+# add:
+from launch_ros.actions import Node
 
 def generate_launch_description() -> LaunchDescription:
     bringup_share = Path(get_package_share_directory('mycobot_280_bringup'))
@@ -40,6 +42,19 @@ def generate_launch_description() -> LaunchDescription:
 
     moveit_config = moveit_builder.to_moveit_configs()
 
+    # Gazebo 없이 로봇 모델/TF를 띄우기 위해 robot_state_publisher + joint_state_publisher 추가
+    robot_state_pub = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        parameters=[moveit_config.robot_description],  # URDF 로딩
+        output="screen",
+    )
+    joint_state_pub = Node(
+        package="joint_state_publisher",               # 필요 시 joint_state_publisher_gui로 교체 가능
+        executable="joint_state_publisher",
+        output="screen",
+    )
+
     move_group_launch = generate_move_group_launch(moveit_config)
     moveit_rviz_launch = generate_moveit_rviz_launch(moveit_config)
 
@@ -49,6 +64,8 @@ def generate_launch_description() -> LaunchDescription:
                 'rviz_config',
                 str(bringup_share / 'config' / 'moveit' / 'moveit.rviz'),
             ),
+            robot_state_pub,
+            joint_state_pub,
             *move_group_launch.entities,
             *moveit_rviz_launch.entities,
         ]
