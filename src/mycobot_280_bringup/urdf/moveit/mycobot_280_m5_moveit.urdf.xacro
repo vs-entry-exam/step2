@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mycobot_280_m5">
+  <xacro:property name="mesh_path" value="file://$(find mycobot_description)/urdf/mycobot_280_m5"/>
+
+  <xacro:property name="base_half_height" value="0.0"/>
+
+  <link name="base_footprint">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <link name="world"/>
+
+  <joint name="virtual_joints" type="fixed">
+    <parent link="world"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="g_base">
+    <inertial>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.005" iyy="0.005" izz="0.008" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="${mesh_path}/G_base.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.02" rpy="0 0 1.5708"/>
+      <geometry>
+        <box size="0.14 0.14 0.04"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_footprint_to_g_base" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="g_base"/>
+    <origin xyz="0 0 ${base_half_height}" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:macro name="arm_link" params="name mesh xyz rpy mass box_size">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+      <visual>
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+        <geometry>
+          <mesh filename="${mesh_path}/${mesh}"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+        <geometry>
+          <box size="${box_size}"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <xacro:arm_link name="joint1" mesh="joint1.dae" xyz="0 0 0" rpy="0 0 -1.5708" mass="0.4" box_size="0.08 0.08 0.05"/>
+  <xacro:arm_link name="joint2" mesh="joint2.dae" xyz="0 0 -0.06096" rpy="0 0 -1.5708" mass="0.3" box_size="0.07 0.07 0.05"/>
+  <xacro:arm_link name="joint3" mesh="joint3.dae" xyz="0 0 0.03256" rpy="0 -1.5708 0" mass="0.25" box_size="0.06 0.06 0.04"/>
+  <xacro:arm_link name="joint4" mesh="joint4.dae" xyz="0 0 0.03056" rpy="0 -1.5708 0" mass="0.2" box_size="0.05 0.05 0.04"/>
+  <xacro:arm_link name="joint5" mesh="joint5.dae" xyz="0 0 -0.03356" rpy="-1.5708 0 0" mass="0.18" box_size="0.05 0.05 0.04"/>
+  <xacro:arm_link name="joint6" mesh="joint6.dae" xyz="0 0 -0.038" rpy="0 0 0" mass="0.15" box_size="0.05 0.05 0.04"/>
+  <xacro:arm_link name="joint6_flange" mesh="joint7.dae" xyz="0 0 -0.012" rpy="0 0 0" mass="0.1" box_size="0.04 0.04 0.03"/>
+
+  <joint name="g_base_to_joint1" type="fixed">
+    <parent link="g_base"/>
+    <child link="joint1"/>
+    <origin xyz="0 0 0.025" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="joint2_to_joint1" type="revolute">
+    <parent link="joint1"/>
+    <child link="joint2"/>
+    <origin xyz="0 0 0.13156" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" velocity="2.0" lower="-2.93" upper="2.93"/>
+  </joint>
+
+  <joint name="joint3_to_joint2" type="revolute">
+    <parent link="joint2"/>
+    <child link="joint3"/>
+    <origin xyz="0 0 -0.001" rpy="0 1.5708 -1.5708"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" velocity="2.0" lower="-2.35" upper="2.35"/>
+  </joint>
+
+  <joint name="joint4_to_joint3" type="revolute">
+    <parent link="joint3"/>
+    <child link="joint4"/>
+    <origin xyz="-0.1104 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" velocity="2.0" lower="-2.53" upper="2.53"/>
+  </joint>
+
+  <joint name="joint5_to_joint4" type="revolute">
+    <parent link="joint4"/>
+    <child link="joint5"/>
+    <origin xyz="-0.096 0 0.06462" rpy="0 0 -1.5708"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" velocity="2.0" lower="-2.53" upper="2.53"/>
+  </joint>
+
+  <joint name="joint6_to_joint5" type="revolute">
+    <parent link="joint5"/>
+    <child link="joint6"/>
+    <origin xyz="0 -0.07318 0" rpy="1.5708 -1.5708 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" velocity="2.0" lower="-2.93" upper="2.93"/>
+  </joint>
+
+  <joint name="joint6output_to_joint6" type="revolute">
+    <parent link="joint6"/>
+    <child link="joint6_flange"/>
+    <origin xyz="0 0.0456 0" rpy="-1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" velocity="2.0" lower="-3.14" upper="3.14"/>
+  </joint>
+</robot>
