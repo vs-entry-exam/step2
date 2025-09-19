@@ -73,3 +73,15 @@ alias rnl='ros2 node list'
 alias rqtall='(ros2 run rqt_gui rqt_gui & ros2 run rqt_graph rqt_graph &)'
 ```
 
+## Troubleshooting
+
+- Low-memory colcon builds: 일부 패키지가 병렬 컴파일 과정에서 OOM으로 중단되면 병렬도를 줄이거나 임시 스왑을 늘리고, 필요하면 패키지를 나눠서 순차 빌드한다.
+
+```bash
+# 단일 스레드 빌드
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_PARALLEL_LEVEL=1
+
+# 또는
+export MAKEFLAGS=-j1
+colcon build --symlink-install --packages-select <패키지명>
+```
