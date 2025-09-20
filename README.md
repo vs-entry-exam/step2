@@ -172,6 +172,23 @@ ros2 param get /move_group moveit_simple_controller_manager.controller_names
 
 ---
 
+## Artifacts
+
+* **Screenshots**
+
+  * AGV: SLAM 맵, Nav2 Goal, 경로/TF 뷰
+  * **rqt\_graph**: 노드/토픽 연결 그래프 캡처 (아래 이미지들과 **같은 폴더/위치**에 저장하고, 동일한 방식으로 문서에 삽입)
+  * Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
+
+* **Demo Videos**
+
+  * [AGV E2E Demo](#)
+  * [Cobot Gazebo+MoveIt Demo](#)
+
+> 이미지 관리 팁: `docs/assets/` 폴더에 스크린샷과 rqt\_graph 이미지를 함께 두고, 마크다운에서는 `![캡션](assets/<파일명>.png)` 형태로 통일해 포함하세요.
+
+---
+
 ## Troubleshooting
 
 * **메모리 부족(OOM)로 빌드 중단**: 병렬도 축소/스왑 확장/패키지 선택 빌드
@@ -183,23 +200,9 @@ export MAKEFLAGS=-j1
 colcon build --symlink-install --packages-select <패키지명>
 ```
 
-* **Plan 성공, Execute 실패/재플랜**:
-
-  * RViz → Allow Replanning 해제, Replan Attempts=0
-  * `/joint_states` 중복 퍼블리셔 제거(joint\_state\_publisher 끄기)
-  * `use_sim_time:=true` 통일, MoveIt/컨트롤러 허용오차 보정
-
 ---
 
-## Artifacts
+## Project Limitations (현재 한계)
 
-* **Screenshots**
-
-  * AGV: SLAM 맵, Nav2 Goal, 경로/TF 뷰
-  * Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
-* **Demo Videos**
-
-  * [AGV E2E Demo](#)
-  * [Cobot Gazebo+MoveIt Demo](#)
-
-> 위 링크 자리에 캡처 이미지/시연 동영상 URL을 추가하세요.
+* omni 를 nav2에서 활용할 수 없다.
+* Plan & Excute 완료 후에도 재플랜 되는 문제가 있다.
