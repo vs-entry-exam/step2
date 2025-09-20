@@ -36,6 +36,9 @@
 
 ### VLA Architecture
 
+<img width="802" height="441" alt="vla_architecture drawio" src="https://github.com/user-attachments/assets/28ca5035-2b04-4825-b94d-55365f4f70e2" />
+
+**Figure 2:** Vision Language Action Model Architecture
 
 
 
