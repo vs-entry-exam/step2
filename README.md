@@ -8,6 +8,22 @@
 
 
 
+### Artifacts
+
+* AGV: Gazebo 맵, SLAM, Nav2 Goal, 경로/TF 뷰
+  * <img width="2560" height="1440" alt="myagv_gzb_slm_nv" src="https://github.com/user-attachments/assets/380e00ef-1a48-45d2-b4d2-c46d20e1cae8" />
+  * ![rosgraph_agv](https://github.com/user-attachments/assets/89ae825d-331a-4780-baee-8b964a4e8c11)
+  * [myAGV Gazebo+SLAM+Nav2 Demo](https://youtu.be/KWQHvcB6-xM)
+
+* Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
+  * <img width="2560" height="1440" alt="mycobot_gzb_mp" src="https://github.com/user-attachments/assets/2da665b7-1c65-4536-a97c-65ba390b54f6" />
+  * ![rosgraph_cobot](https://github.com/user-attachments/assets/6a83c474-962d-4bd2-9ed2-fe04d1b87385)
+  * [myCobot Gazebo+MoveIt Demo](https://youtu.be/ChGDlB8bcLQ)
+
+
+
+
+
 ### Prerequisites
 
 ```
@@ -120,19 +136,6 @@ ros2 action list | grep follow_joint_trajectory
 ros2 param get /move_group moveit_simple_controller_manager.controller_names
 # → ['arm_group_controller']
 ```
-
-
-### Artifacts
-
-* AGV: Gazebo 맵, SLAM, Nav2 Goal, 경로/TF 뷰
-  * <img width="2560" height="1440" alt="myagv_gzb_slm_nv" src="https://github.com/user-attachments/assets/380e00ef-1a48-45d2-b4d2-c46d20e1cae8" />
-  * ![rosgraph_agv](https://github.com/user-attachments/assets/89ae825d-331a-4780-baee-8b964a4e8c11)
-  * [myAGV Gazebo+SLAM+Nav2 Demo](https://youtu.be/KWQHvcB6-xM)
-
-* Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
-  * <img width="2560" height="1440" alt="mycobot_gzb_mp" src="https://github.com/user-attachments/assets/2da665b7-1c65-4536-a97c-65ba390b54f6" />
-  * ![rosgraph_cobot](https://github.com/user-attachments/assets/6a83c474-962d-4bd2-9ed2-fe04d1b87385)
-  * [myCobot Gazebo+MoveIt Demo](https://youtu.be/ChGDlB8bcLQ)
 
 
 
