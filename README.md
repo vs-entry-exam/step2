@@ -1,14 +1,14 @@
 # Step2 – VLA Train Data
 
-## Project Goals
+### Project Goals
 
 * **myAGV Pro**: Gazebo + SLAM + Nav2를 end-to-end로 구동하고, 실센서/시뮬 센서 모두에서 **내비게이션 데이터**(맵, 주행 궤적, `/scan`·`/odom`·`/tf`·`/cmd_vel`)를 수집할 수 있게 한다.
 * **myCobot 280 M5**: Gazebo + MoveIt(플래닝/실행)을 안정화하고, **조작 데이터**(RGB/Joint states/Trajectory) 기록 파이프라인을 준비한다.
 * **VLA 학습 대비**: 조작/주행의 \*\*입력(관측)\*\*과 **출력(액션)** 토픽을 명확히 정의하고, 재현 가능한 **런치/수집 절차**를 문서화한다.
 
----
 
-## Prerequisites
+
+### Prerequisites
 
 ```
 Ubuntu 22.04
@@ -16,14 +16,14 @@ ROS2 Humble
 Gazebo, MoveIt2, Nav2, SLAM Toolbox
 ```
 
-## Dependencies
+### Dependencies
 
 * [agv\_pro\_ros2](https://github.com/elephantrobotics/agv_pro_ros2.git)
 * [mycobot\_ros2](https://github.com/elephantrobotics/mycobot_ros2.git)
 
----
 
-## Shell Configuration (Optional but Recommended)
+
+### Shell Configuration (Optional but Recommended)
 
 개발 편의를 위해 아래를 `~/.bashrc`에 추가하세요.
 
@@ -65,9 +65,9 @@ alias rnl='ros2 node list'
 alias rqtall='(ros2 run rqt_gui rqt_gui & ros2 run rqt_graph rqt_graph &)'
 ```
 
----
 
-## Build
+
+### Build
 
 ```bash
 # 1) 의존 패키지 클론 (예: step2/src/ 하위)
@@ -85,11 +85,11 @@ colcon build --symlink-install
 source install/setup.bash
 ```
 
----
 
-## How to Run
 
-### A. AGV – Gazebo + SLAM + Nav2 (시뮬 end-to-end)
+### How to Run
+
+#### A. AGV – Gazebo + SLAM + Nav2 (시뮬 end-to-end)
 
 ```bash
 source /opt/ros/humble/setup.bash
@@ -112,9 +112,9 @@ ros2 bag record -o agv_nav2_dataset \
   /amcl_pose /initialpose
 ```
 
----
 
-### B. Cobot – MoveIt Only (플래닝/실행 빠른 실험)
+
+#### B. Cobot – MoveIt Only (플래닝/실행 빠른 실험)
 
 ```bash
 source /opt/ros/humble/setup.bash
@@ -135,9 +135,9 @@ ros2 bag record -o cobot_moveit_dataset \
   /arm_group_controller/follow_joint_trajectory/result
 ```
 
----
 
-### C. Cobot – Gazebo + MoveIt 통합 (시뮬에서 실제 실행 반영)
+
+#### C. Cobot – Gazebo + MoveIt 통합 (시뮬에서 실제 실행 반영)
 
 ```bash
 source /opt/ros/humble/setup.bash
@@ -161,35 +161,31 @@ ros2 param get /move_group moveit_simple_controller_manager.controller_names
 * 모든 노드에 `use_sim_time:=true` 일관 적용.
 * `/joint_states` 퍼블리셔는 **joint\_state\_broadcaster 1개만** 유지(중복 금지).
 
----
 
-## VLA 데이터 토픽 가이드 (초안)
+
+### VLA 데이터 토픽 가이드 (초안)
 
 * **Manipulation(조작) 입력**: RGB(카메라), `/tf`, `/joint_states`, (옵션) 깊이/포인트클라우드
 * **Manipulation 출력**: `/arm_group_controller/follow_joint_trajectory/*`(goal/result/feedback)
 * **Locomotion(주행) 입력**: `/scan`, `/tf`, `/odom`, (옵션) RGB
 * **Locomotion 출력**: `/cmd_vel` (또는 상대 웨이포인트 토픽 설계 시 별도 정의)
 
----
 
-## Artifacts
 
-* **Screenshots**
+### Artifacts
 
-  * AGV: SLAM 맵, Nav2 Goal, 경로/TF 뷰
-  * **rqt\_graph**: 노드/토픽 연결 그래프 캡처 (아래 이미지들과 **같은 폴더/위치**에 저장하고, 동일한 방식으로 문서에 삽입)
-  * Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
+* AGV: SLAM 맵, Nav2 Goal, 경로/TF 뷰
+  * <img width="2560" height="1440" alt="myagv_gzb_slm_nv" src="https://github.com/user-attachments/assets/380e00ef-1a48-45d2-b4d2-c46d20e1cae8" />
+  * [AGV E2E Demo](https://youtu.be/KWQHvcB6-xM)
 
-* **Demo Videos**
+* Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
+  * <img width="2560" height="1440" alt="mycobot_gzb_mp" src="https://github.com/user-attachments/assets/2da665b7-1c65-4536-a97c-65ba390b54f6" />
+  * [Cobot Gazebo+MoveIt Demo](https://youtu.be/ChGDlB8bcLQ)
 
-  * [AGV E2E Demo](#)
-  * [Cobot Gazebo+MoveIt Demo](#)
 
-> 이미지 관리 팁: `docs/assets/` 폴더에 스크린샷과 rqt\_graph 이미지를 함께 두고, 마크다운에서는 `![캡션](assets/<파일명>.png)` 형태로 통일해 포함하세요.
 
----
 
-## Troubleshooting
+### Troubleshooting
 
 * **메모리 부족(OOM)로 빌드 중단**: 병렬도 축소/스왑 확장/패키지 선택 빌드
 
@@ -200,9 +196,9 @@ export MAKEFLAGS=-j1
 colcon build --symlink-install --packages-select <패키지명>
 ```
 
----
 
-## Project Limitations (현재 한계)
+
+### Project Limitations 
 
 * omni 를 nav2에서 활용할 수 없다.
 * Plan & Excute 완료 후에도 재플랜 되는 문제가 있다.
