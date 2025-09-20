@@ -36,7 +36,9 @@ def generate_launch_description():
         "'", use_ros2_control, "' == 'true' and '", xacro_file_ros2_control, "' or '", xacro_file_default, "'"
     ])
     robot_description_content = ParameterValue(
-        Command(['xacro ', selected_xacro]),
+        # Command(['xacro ', selected_xacro]),
+        Command(['xacro ', xacro_file_ros2_control]),
+        # Command(['xacro ', xacro_file_default]),
         value_type=str
     )
     robot_description = {'robot_description': robot_description_content}

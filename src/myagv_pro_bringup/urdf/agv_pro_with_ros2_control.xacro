@@ -79,7 +79,7 @@
   </link>
 
   <joint name="lidar_joint" type="fixed">
-    <origin xyz="0.17891 0 0.20928" rpy="0 0 0" />
+    <origin xyz="0.17891 0 0.25928" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="laser_link" />
   </joint>
@@ -130,6 +130,12 @@
   </gazebo>
 
   <!-- Use overlay ros2_control definition (mecanum) -->
-  <xacro:include filename="$(find myagv_pro_bringup)/urdf/ros2_controller_mecanum.xacro"/>
+  <!-- <xacro:include filename="$(find myagv_pro_bringup)/urdf/ros2_controller_mecanum.xacro"/>
+  <xacro:ros2_controller/> -->
+  
+  <!-- Include ros2_controller.xacro to define controllers -->
+  <xacro:include filename="$(find agv_pro_gazebo)/urdf/parts/gazebo_control_plugin.xacro"/>
+  <xacro:include filename="$(find agv_pro_gazebo)/urdf/ros2_controller.xacro"/>
   <xacro:ros2_controller/>
+  <xacro:gazebo_control_plugin/>
 </robot>
