@@ -86,15 +86,6 @@ ros2 topic list | grep -E "/scan|/map|/cmd_vel|/tf"
 # RViz에서 초기 위치 설정 후 Nav2 Goal 클릭 → /cmd_vel 생성 확인
 ```
 
-**데이터 수집(예시)**
-
-```bash
-# 주행·지도 관련 핵심 토픽 녹화
-ros2 bag record -o agv_nav2_dataset \
-  /scan /map /tf /tf_static /odom /cmd_vel \
-  /amcl_pose /initialpose
-```
-
 
 
 #### B. Cobot – MoveIt Only (플래닝/실행 빠른 실험)
@@ -108,15 +99,6 @@ ros2 launch mycobot_280_bringup mycobot_moveit_only.launch.py
 # RViz MotionPlanning: Start=Current, Plan → Execute
 ```
 
-**조작 데이터 수집(예시)**
-
-```bash
-# 관절/경로 중심 최소 셋
-ros2 bag record -o cobot_moveit_dataset \
-  /joint_states /tf /tf_static \
-  /arm_group_controller/follow_joint_trajectory/goal \
-  /arm_group_controller/follow_joint_trajectory/result
-```
 
 
 
@@ -138,21 +120,6 @@ ros2 action list | grep follow_joint_trajectory
 ros2 param get /move_group moveit_simple_controller_manager.controller_names
 # → ['arm_group_controller']
 ```
-
-**프레임/시계 주의**
-
-* 모든 노드에 `use_sim_time:=true` 일관 적용.
-* `/joint_states` 퍼블리셔는 **joint\_state\_broadcaster 1개만** 유지(중복 금지).
-
-
-
-### VLA 데이터 토픽 가이드 (초안)
-
-* **Manipulation(조작) 입력**: RGB(카메라), `/tf`, `/joint_states`, (옵션) 깊이/포인트클라우드
-* **Manipulation 출력**: `/arm_group_controller/follow_joiPront_trajectory/*`(goal/result/feedback)
-* **Locomotion(주행) 입력**: `/scan`, `/tf`, `/odom`, (옵션) RGB
-* **Locomotion 출력**: `/cmd_vel` (또는 상대 웨이포인트 토픽 설계 시 별도 정의)
-
 
 
 ### Artifacts
