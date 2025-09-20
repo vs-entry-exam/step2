@@ -157,7 +157,8 @@ colcon build --symlink-install --packages-select <패키지명>
 
 * omni 를 nav2에서 활용할 수 없다.
 * Plan & Excute 완료 후에도 재플랜 되는 문제가 있다.
-
+* Web 로봇 시뮬레이션 미구현
+* VLA 학습용 데이터 파이프라인 미구현
 
 
 
