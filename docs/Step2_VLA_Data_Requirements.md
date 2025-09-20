@@ -10,11 +10,11 @@
 
 ## Data Collection and Efficiency Strategies
 
-- **Large-Scale, Diverse Demonstrations:** VLA models benefit from large and diverse datasets, such as hundreds of thousands to millions of robot demonstrations covering a wide range of tasks, objects, and environments  (Arai et al., 2024; Deng et al., 2025; Kim et al., 2024; Zhang et al., 2024; Pertsch et al., 2025; Brohan et al., 2023; Huang et al., 2023).
-- **Synthetic and Simulated Data:** Synthetic datasets (e.g., photorealistic simulations) can supplement or replace costly real-world data, enabling large-scale pretraining and improved generalization  (Deng et al., 2025; Zhen et al., 2024; Fang et al., 2025).
-- **Task Decomposition:** Decoupling tasks into sub-stages (e.g., spatial reasoning vs. physical interaction) allows leveraging inexpensive data (like spatial reasoning) to boost performance while minimizing the need for costly physical interaction data  (Zheng et al., 2025).
-- **Internet-Scale and Web Data:** Pretraining on internet-scale vision-language datasets, including videos without explicit action labels, can improve generalization and reduce reliance on robot-specific data  (Ye et al., 2024; Brohan et al., 2023; Huang et al., 2023).
-- **3D and Multimodal Integration:** Incorporating 3D data (point clouds, 3D coordinates) enhances spatial reasoning and adaptability to real-world scenarios  (Zhen et al., 2024; Li et al., 2025; Huang et al., 2023).
+- **Large-Scale, Diverse Demonstrations:** VLA 모델은 광범위한 작업, 객체 및 환경을 포괄하는 수십만 개에서 수백만 개의 로봇 데모와 같은 방대하고 다양한 데이터 세트의 이점을 얻습니다.  (Arai et al., 2024; Deng et al., 2025; Kim et al., 2024; Zhang et al., 2024; Pertsch et al., 2025; Brohan et al., 2023; Huang et al., 2023).
+- **Synthetic and Simulated Data:** 합성 데이터 세트(예: 사실적인 시뮬레이션)는 비용이 많이 드는 실제 데이터를 보완하거나 대체하여 대규모 사전 학습 및 향상된 일반화를 가능하게 합니다.  (Deng et al., 2025; Zhen et al., 2024; Fang et al., 2025).
+- **Task Decomposition:** 작업을 하위 단계(예: 공간 추론 대 물리적 상호 작용)로 결합하면 비용이 많이 들지 않는 데이터(예: 공간 추론)를 활용하여 성능을 높이는 동시에 비용이 많이 드는 물리적 상호 작용 데이터의 필요성을 최소화할 수 있습니다.  (Zheng et al., 2025).
+- **Internet-Scale and Web Data:** 명시적인 동작 레이블이 없는 비디오를 포함한 인터넷 규모의 시각 언어 데이터 세트에 대한 사전 학습은 일반화를 개선하고 로봇 특정 데이터에 대한 의존도를 줄일 수 있습니다.  (Ye et al., 2024; Brohan et al., 2023; Huang et al., 2023).
+- **3D and Multimodal Integration:** 3D 데이터(포인트 클라우드, 3D 좌표)를 통합하면 공간적 추론과 실제 시나리오에 대한 적응성이 향상됩니다.  (Zhen et al., 2024; Li et al., 2025; Huang et al., 2023).
 
 ## Training and Curation Considerations
 
@@ -33,6 +33,11 @@
 | Web-scale Video      | Internet videos, unsupervised action labels| Skill diversity, transferability  |  (Ye et al., 2024; Brohan et al., 2023; Huang et al., 2023)|
 
 **Figure 1:** Summary of VLA training data types, sources, and considerations.
+
+### VLA Architecture
+
+
+
 
 ## Summary
 
