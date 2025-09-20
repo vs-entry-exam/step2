@@ -10,6 +10,10 @@
 
 ### Artifacts
 
+* Flow chart
+<img width="641" height="761" alt="step2_flow _chart drawio" src="https://github.com/user-attachments/assets/3a2727a2-a072-4130-8f86-4f49fe742da8" />
+
+
 * AGV: Gazebo 맵, SLAM, Nav2 Goal, 경로/TF 뷰
   * <img width="2560" height="1440" alt="myagv_gzb_slm_nv" src="https://github.com/user-attachments/assets/380e00ef-1a48-45d2-b4d2-c46d20e1cae8" />
   * ![rosgraph_agv](https://github.com/user-attachments/assets/89ae825d-331a-4780-baee-8b964a4e8c11)
