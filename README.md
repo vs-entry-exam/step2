@@ -44,17 +44,6 @@ cbpkg() {
 }
 
 #=================================#
-# Workspace switching (usage: ws agv / ws cobot / ws ros2)
-ws() {
-    case "$1" in
-        agv)   source ~/agv_ws/install/setup.bash && echo "[ws] Switched to agv_ws"   ;;
-        cobot) source ~/cobot_ws/install/setup.bash && echo "[ws] Switched to cobot_ws" ;;
-        ros2)  source ~/ros2_ws/install/setup.bash && echo "[ws] Switched to ros2_ws"  ;;
-        *)     echo "Usage: ws {agv|cobot|ros2}" ;;
-    esac
-}
-
-#=================================#
 # ROS2 aliases
 alias rz='ros2 run rviz2 rviz2'
 alias gz='ros2 launch gazebo_ros gazebo.launch.py'
@@ -70,18 +59,12 @@ alias rqtall='(ros2 run rqt_gui rqt_gui & ros2 run rqt_graph rqt_graph &)'
 ### Build
 
 ```bash
-# 1) 의존 패키지 클론 (예: step2/src/ 하위)
-cd ~/step2/src
-git clone https://github.com/elephantrobotics/agv_pro_ros2.git
-git clone https://github.com/elephantrobotics/mycobot_ros2.git
-# (필요 시 bringup/설정 패키지 추가)
-
-# 2) 워크스페이스 루트에서 빌드
+# 1) 워크스페이스 루트에서 빌드
 cd ~/step2
 source /opt/ros/humble/setup.bash
 colcon build --symlink-install
 
-# 3) 환경 적용
+# 2) 환경 적용
 source install/setup.bash
 ```
 
@@ -166,7 +149,7 @@ ros2 param get /move_group moveit_simple_controller_manager.controller_names
 ### VLA 데이터 토픽 가이드 (초안)
 
 * **Manipulation(조작) 입력**: RGB(카메라), `/tf`, `/joint_states`, (옵션) 깊이/포인트클라우드
-* **Manipulation 출력**: `/arm_group_controller/follow_joint_trajectory/*`(goal/result/feedback)
+* **Manipulation 출력**: `/arm_group_controller/follow_joiPront_trajectory/*`(goal/result/feedback)
 * **Locomotion(주행) 입력**: `/scan`, `/tf`, `/odom`, (옵션) RGB
 * **Locomotion 출력**: `/cmd_vel` (또는 상대 웨이포인트 토픽 설계 시 별도 정의)
 
@@ -174,13 +157,15 @@ ros2 param get /move_group moveit_simple_controller_manager.controller_names
 
 ### Artifacts
 
-* AGV: SLAM 맵, Nav2 Goal, 경로/TF 뷰
+* AGV: Gazebo 맵, SLAM, Nav2 Goal, 경로/TF 뷰
   * <img width="2560" height="1440" alt="myagv_gzb_slm_nv" src="https://github.com/user-attachments/assets/380e00ef-1a48-45d2-b4d2-c46d20e1cae8" />
-  * [AGV E2E Demo](https://youtu.be/KWQHvcB6-xM)
+  * ![rosgraph_agv](https://github.com/user-attachments/assets/89ae825d-331a-4780-baee-8b964a4e8c11)
+  * [myAGV Gazebo+SLAM+Nav2 Demo](https://youtu.be/KWQHvcB6-xM)
 
 * Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
   * <img width="2560" height="1440" alt="mycobot_gzb_mp" src="https://github.com/user-attachments/assets/2da665b7-1c65-4536-a97c-65ba390b54f6" />
-  * [Cobot Gazebo+MoveIt Demo](https://youtu.be/ChGDlB8bcLQ)
+  * ![rosgraph_cobot](https://github.com/user-attachments/assets/6a83c474-962d-4bd2-9ed2-fe04d1b87385)
+  * [myCobot Gazebo+MoveIt Demo](https://youtu.be/ChGDlB8bcLQ)
 
 
 
@@ -202,3 +187,7 @@ colcon build --symlink-install --packages-select <패키지명>
 
 * omni 를 nav2에서 활용할 수 없다.
 * Plan & Excute 완료 후에도 재플랜 되는 문제가 있다.
+
+
+
+
