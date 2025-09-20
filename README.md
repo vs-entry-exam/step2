@@ -128,7 +128,7 @@ ros2 launch mycobot_280_bringup mycobot_moveit_only.launch.py
 source /opt/ros/humble/setup.bash
 source ~/step2/install/setup.bash
 
-ros2 launch mycobot_280_bringup mycobot_gazebo_moveit_all.launch.py
+ros2 launch mycobot_280_bringup mycobot_gazebo_moveit.launch.py
 
 # 상태 점검
 ros2 control list_controllers
