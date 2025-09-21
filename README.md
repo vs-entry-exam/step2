@@ -1,169 +1,76 @@
-# Step2 – VLA Train Data
+# Step 2: AGV/Cobot 시뮬레이션 및 데이터 수집 환경 구축
 
-### Project Goals
+## 1. 프로젝트 개요
 
-* **myAGV Pro**: Gazebo + SLAM + Nav2를 end-to-end로 구동하고, 실센서/시뮬 센서 모두에서 **내비게이션 데이터**(맵, 주행 궤적, `/scan`·`/odom`·`/tf`·`/cmd_vel`)를 수집할 수 있게 한다.
-* **myCobot 280 M5**: Gazebo + MoveIt(플래닝/실행)을 안정화하고, **조작 데이터**(RGB/Joint states/Trajectory) 기록 파이프라인을 준비한다.
-* **VLA 학습 대비**: 조작/주행의 \*\*입력(관측)\*\*과 **출력(액션)** 토픽을 명확히 정의하고, 재현 가능한 **런치/수집 절차**를 문서화한다.
+ROS2와 Gazebo를 사용하여 AGV(Automated Guided Vehicle)와 Cobot(myCobot 280)의 시뮬레이션 환경을 구축합니다. 최종적으로 VLA(Vision-Language-Action) 모델 학습에 필요한 주행 및 조작 데이터를 수집하는 것을 목표로 합니다.
 
+## 2. 목표
 
+- **AGV (자율 주행)**:
+    - **2D SLAM**: `SLAM Toolbox`를 사용하여 Gazebo 가상 환경의 2D 지도를 생성합니다.
+    - **2D Navigation**: 생성된 지도를 기반으로 `Nav2` 스택을 활용하여 목적지까지 자율 주행을 구현합니다.
+    - **데이터 수집**: 주행 데이터(`/scan`, `/odom`, `/tf`, `/cmd_vel`)를 수집할 수 있는 파이프라인을 구축합니다.
 
-### Artifacts
+- **Cobot (로봇 팔 조작)**:
+    - **플래닝 및 실행**: `MoveIt2`를 사용하여 로봇 팔의 동작을 계획하고 Gazebo 시뮬레이션에 정확히 반영합니다.
+    - **데이터 수집**: 조작 데이터(RGB 이미지, Joint states, Trajectory) 기록을 위한 기반을 마련합니다.
 
-* Flow chart
-<img width="641" height="761" alt="step2_flow _chart drawio" src="https://github.com/user-attachments/assets/3a2727a2-a072-4130-8f86-4f49fe742da8" />
+## 3. 결과물 (Artifacts)
 
+### 시스템 구성도
 
-* AGV: Gazebo 맵, SLAM, Nav2 Goal, 경로/TF 뷰
-  * <img width="2560" height="1440" alt="myagv_gzb_slm_nv" src="https://github.com/user-attachments/assets/380e00ef-1a48-45d2-b4d2-c46d20e1cae8" />
-  * ![rosgraph_agv](https://github.com/user-attachments/assets/89ae825d-331a-4780-baee-8b964a4e8c11)
-  * [myAGV Gazebo+SLAM+Nav2 Demo](https://youtu.be/KWQHvcB6-xM)
+![시스템 구성도](https://github.com/user-attachments/assets/3a2727a2-a072-4130-8f86-4f49fe742da8)
 
-* Cobot: MoveIt 플래닝 장면, Gazebo 실행 반영
-  * <img width="2560" height="1440" alt="mycobot_gzb_mp" src="https://github.com/user-attachments/assets/2da665b7-1c65-4536-a97c-65ba390b54f6" />
-  * ![rosgraph_cobot](https://github.com/user-attachments/assets/6a83c474-962d-4bd2-9ed2-fe04d1b87385)
-  * [myCobot Gazebo+MoveIt Demo](https://youtu.be/ChGDlB8bcLQ)
+### 실행 화면
 
+**AGV: Gazebo + SLAM + Nav2**
+![AGV 시뮬레이션 화면](https://github.com/user-attachments/assets/380e00ef-1a48-45d2-b4d2-c46d20e1cae8)
 
+**Cobot: Gazebo + MoveIt**
+![Cobot 시뮬레이션 화면](https://github.com/user-attachments/assets/2da665b7-1c65-4536-a97c-65ba390b54f6)
 
+### 실행 영상
 
+- **[AGV 시연 영상](https://youtu.be/KWQHvcB6-xM)**
+- **[Cobot 시연 영상](https://youtu.be/ChGDlB8bcLQ)**
 
-### Prerequisites
+## 4. 핵심 패키지
 
-```
-Ubuntu 22.04
-ROS2 Humble
-Gazebo, MoveIt2, Nav2, SLAM Toolbox
-```
+- `myagv_pro_bringup`: AGV의 SLAM, Navigation 등 주요 기능을 통합 실행하는 런치 파일을 포함합니다.
+- `mycobot_280_bringup`: myCobot의 MoveIt, Gazebo 연동을 위한 런치 파일을 포함합니다.
+- `agv_pro_gazebo`: AGV의 Gazebo 시뮬레이션 월드 및 로봇 모델을 로드합니다.
+- `navigation2`, `slam_toolbox`, `moveit2`: 자율 주행 및 로봇 팔 제어를 위한 핵심 ROS2 프레임워크입니다.
 
-### Dependencies
+## 5. 실행 방법
 
-* [agv\_pro\_ros2](https://github.com/elephantrobotics/agv_pro_ros2.git)
-* [mycobot\_ros2](https://github.com/elephantrobotics/mycobot_ros2.git)
-
-
-
-### Shell Configuration (Optional but Recommended)
-
-개발 편의를 위해 아래를 `~/.bashrc`에 추가하세요.
+### AGV: Gazebo + SLAM + Nav2 통합 실행
 
 ```bash
-#==================================================================#
-# ROS2
-source /opt/ros/humble/setup.bash
-source ~/ros2_ws/install/setup.bash
+# 워크스페이스 환경 설정
 source ~/step2/install/setup.bash
-
-#=================================#
-# Build aliases
-alias cb='colcon build --symlink-install'
-
-# Build only a specific package (usage: cbpkg <package_name>)
-cbpkg() {
-  colcon build --symlink-install --packages-select "$1"
-}
-
-#=================================#
-# ROS2 aliases
-alias rz='ros2 run rviz2 rviz2'
-alias gz='ros2 launch gazebo_ros gazebo.launch.py'
-alias rd='ros2 doctor'
-alias rtl='ros2 topic list'
-alias rte='ros2 topic echo'
-alias rnl='ros2 node list'
-alias rqtall='(ros2 run rqt_gui rqt_gui & ros2 run rqt_graph rqt_graph &)'
-```
-
-
-
-### Build
-
-```bash
-# 1) 워크스페이스 루트에서 빌드
-cd ~/step2
-source /opt/ros/humble/setup.bash
-colcon build --symlink-install
-
-# 2) 환경 적용
-source install/setup.bash
-```
-
-
-
-### How to Run
-
-#### A. AGV – Gazebo + SLAM + Nav2 (시뮬 end-to-end)
-
-```bash
-source /opt/ros/humble/setup.bash
-source ~/step2/install/setup.bash
-
-# 예시: 통합 런치 (리포의 bringup 런치 기준 이름에 맞춰 수정)
+# 통합 런치 파일 실행
 ros2 launch myagv_pro_bringup sim_slam_nav2.launch.py
-
-# 검증
-ros2 topic list | grep -E "/scan|/map|/cmd_vel|/tf"
-# RViz에서 초기 위치 설정 후 Nav2 Goal 클릭 → /cmd_vel 생성 확인
 ```
 
-
-
-#### B. Cobot – MoveIt Only (플래닝/실행 빠른 실험)
+### Cobot: Gazebo + MoveIt 통합 실행
 
 ```bash
-source /opt/ros/humble/setup.bash
+# 워크스페이스 환경 설정
 source ~/step2/install/setup.bash
-
-ros2 launch mycobot_280_bringup mycobot_moveit_only.launch.py
-
-# RViz MotionPlanning: Start=Current, Plan → Execute
-```
-
-
-
-
-#### C. Cobot – Gazebo + MoveIt 통합 (시뮬에서 실제 실행 반영)
-
-```bash
-source /opt/ros/humble/setup.bash
-source ~/step2/install/setup.bash
-
+# 통합 런치 파일 실행
 ros2 launch mycobot_280_bringup mycobot_gazebo_moveit.launch.py
-
-# 상태 점검
-ros2 control list_controllers
-# → joint_state_broadcaster, arm_group_controller = active
-
-ros2 action list | grep follow_joint_trajectory
-# → /arm_group_controller/follow_joint_trajectory
-
-ros2 param get /move_group moveit_simple_controller_manager.controller_names
-# → ['arm_group_controller']
 ```
 
+## 6. 자체 평가 및 개선 방향
 
+### 미비한 점
 
+- **데이터 파이프라인 미완성**: VLA 학습에 필요한 데이터를 `ros2 bag` 등으로 기록하고 가공하는 자동화된 파이프라인이 구현되지 않았습니다.
+- **시뮬레이션 한계**: Omni-drive AGV의 특성이 Nav2에 완전히 반영되지 않았고, MoveIt의 플래닝/실행 안정성이 부족한 경우가 있습니다.
+- **통합 시나리오 부재**: AGV와 Cobot이 연동되는 복합적인 작업 시나리오가 없습니다.
 
-### Troubleshooting
+### 개선 방향
 
-* **메모리 부족(OOM)로 빌드 중단**: 병렬도 축소/스왑 확장/패키지 선택 빌드
-
-```bash
-colcon build --symlink-install --cmake-args -DCMAKE_BUILD_PARALLEL_LEVEL=1
-# 또는
-export MAKEFLAGS=-j1
-colcon build --symlink-install --packages-select <패키지명>
-```
-
-
-
-### Project Limitations 
-
-* omni 를 nav2에서 활용할 수 없다.
-* Plan & Excute 완료 후에도 재플랜 되는 문제가 있다.
-* Web 로봇 시뮬레이션 미구현
-* VLA 학습용 데이터 파이프라인 미구현
-  * [VLA Data Requirements](./docs/Step2_VLA_Data_Requirements.md)
-
-
-
+- **데이터 수집 파이프라인 구축**: `ros2 bag`을 이용해 정의된 토픽들을 자동으로 기록하고, 학습에 적합한 포맷으로 변환하는 스크립트를 개발합니다.
+- **시뮬레이션 고도화**: Nav2의 Controller 플러그인을 Omni-drive에 최적화된 것으로 교체/튜닝하고, MoveIt의 재플래닝 문제를 해결하여 안정성을 높입니다.
+- **통합 시나리오 개발**: AGV가 특정 위치로 이동한 후 Cobot이 물체를 집는 등, 두 로봇이 협력하는 통합 시뮬레이션 환경을 구축하여 보다 복잡한 데이터셋을 확보합니다.
